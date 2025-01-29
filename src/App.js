@@ -15,9 +15,9 @@ function App() {
     let newErrors = {};
     if (!formData.firstName.trim()) newErrors.firstName = "First Name is required";
     if (!formData.lastName.trim()) newErrors.lastName = "Last Name is required";
-    if (!formData.email.match(/^\S+@\S+\.\S+$/)) newErrors.email = "Invalid email address";
-    if (!formData.password.match(/^(?=.*\d).{8,}$/))
-      newErrors.password = "Password must be at least 8 characters and contain a number";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) newErrors.email = "Invalid email format";
+    if (!formData.password.match(/^(?=.*\d).{6,}$/))
+      newErrors.password = "Password must be at least 6 characters and contain a number";
     
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -60,7 +60,7 @@ function App() {
                 value={formData.firstName}
                 onChange={handleChange}
               />
-              {errors.firstName && <small className="error">{errors.firstName}</small>}
+              {errors.firstName && <small className="error" style={{ color: "red" }}>{errors.firstName}</small>}
 
               <input
                 type="text"
@@ -69,7 +69,7 @@ function App() {
                 value={formData.lastName}
                 onChange={handleChange}
               />
-              {errors.lastName && <small className="error">{errors.lastName}</small>}
+              {errors.lastName && <small className="error" style={{ color: "red" }}>{errors.lastName}</small>}
 
               <input
                 type="email"
@@ -78,7 +78,7 @@ function App() {
                 value={formData.email}
                 onChange={handleChange}
               />
-              {errors.email && <small className="error">{errors.email}</small>}
+              {errors.email && <small className="error" style={{ color: "red" }}>{errors.email}</small>}
 
               <input
                 type="password"
@@ -87,7 +87,7 @@ function App() {
                 value={formData.password}
                 onChange={handleChange}
               />
-              {errors.password && <small className="error">{errors.password}</small>}
+              {errors.password && <small className="error" style={{ color: "red" }}>{errors.password}</small>}
 
               <button type="submit">Claim your free trial</button>
               <small>
