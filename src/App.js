@@ -1,8 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import "./index.css";
 
-
 function App() {
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+  });
+
+  const [errors, setErrors] = useState({});
+
+  const validate = () => {
+    let newErrors = {};
+    if (!formData.firstName.trim()) newErrors.firstName = "First Name is required";
+    if (!formData.lastName.trim()) newErrors.lastName = "Last Name is required";
+    if (!formData.email.match(/^\S+@\S+\.\S+$/)) newErrors.email = "Invalid email address";
+    if (!formData.password.match(/^(?=.*\d).{8,}$/))
+      newErrors.password = "Password must be at least 8 characters and contain a number";
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (validate()) {
+      alert("Form submitted successfully!");
+    }
+  };
 
   return (
     <div>
@@ -13,7 +43,7 @@ function App() {
             <p>
               See how experienced developers solve problems in real-time.
               Watching scripted tutorials is great, but understanding how
-              developers think is invaluable.{" "}
+              developers think is invaluable.
             </p>
           </article>
 
@@ -22,36 +52,47 @@ function App() {
               <strong>Try it free 7 days </strong> then $20/mo. thereafter
             </p>
 
-            <form className="form">
+            <form className="form" onSubmit={handleSubmit}>
               <input
                 type="text"
                 name="firstName"
-                id="firstName"
                 placeholder="First Name"
+                value={formData.firstName}
+                onChange={handleChange}
               />
+              {errors.firstName && <small className="error">{errors.firstName}</small>}
+
               <input
                 type="text"
                 name="lastName"
-                id="lastName"
                 placeholder="Last Name"
+                value={formData.lastName}
+                onChange={handleChange}
               />
+              {errors.lastName && <small className="error">{errors.lastName}</small>}
 
               <input
                 type="email"
                 name="email"
-                id="email"
                 placeholder="Email Address"
+                value={formData.email}
+                onChange={handleChange}
               />
+              {errors.email && <small className="error">{errors.email}</small>}
+
               <input
                 type="password"
                 name="password"
-                id="password"
                 placeholder="Password"
+                value={formData.password}
+                onChange={handleChange}
               />
-              <button type="sumbit">Claim your free trial </button>
+              {errors.password && <small className="error">{errors.password}</small>}
+
+              <button type="submit">Claim your free trial</button>
               <small>
-                By clicking the button, you are agreeing to our{" "}
-                <span className="red">Terms and Services</span>
+                By clicking the button, you are agreeing to our
+                <span className="red"> Terms and Services</span>
               </small>
             </form>
           </article>
